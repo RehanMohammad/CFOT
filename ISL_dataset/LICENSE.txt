@@ -1,0 +1,36 @@
+ISL Skeleton Dataset – Research Use License (Non-Commercial)
+
+Copyright (c) 2026 Mohammad Rehan
+
+Permission is hereby granted to use, copy, and modify the ISL Skeleton Dataset
+(the “Dataset”) for non-commercial academic research purposes only, subject
+to the following conditions:
+
+1. Non-Commercial Use Only
+   The Dataset may not be used, in whole or in part, for any commercial
+   purposes, including but not limited to commercial products, services,
+   or monetized applications.
+
+2. Citation Requirement
+   Any publication, report, or presentation that uses the Dataset must
+   cite the following paper:
+
+   Mohammad Rehan et al.,
+   "Cross-Frame Optimal Transport Learning for Skeleton-Based Gesture Recognition",
+   ICPR 2026.
+
+3. Redistribution
+   Redistribution of the Dataset, in original or modified form, is not
+   permitted without explicit written permission from the authors.
+
+4. No Warranty
+   The Dataset is provided "as is", without warranty of any kind, express
+   or implied. The authors shall not be liable for any claim, damages, or
+   other liability arising from the use of the Dataset.
+
+5. Attribution
+   Proper attribution to the authors must be retained in all copies or
+   substantial portions of the Dataset.
+
+For permission requests beyond the scope of this license, please contact
+the authors.
