@@ -1,0 +1,46 @@
+ann_train: D:\ipn\annotations\Annot_TrainList_splitted.txt
+ann_val: D:\ipn\annotations\Annot_ValidList_splitted.txt
+aug: false
+batch: 32
+cfot_affinity: learned
+cfot_beta: 0.6
+cfot_cosine_eps: 1.0e-06
+cfot_deltas: [1, 2, 4, 8, 16]
+cfot_euclid_scale: 1.0
+cfot_hidden: 64
+cfot_inject: pre
+cfot_iters: 9
+cfot_keep_mass: 0.8
+cfot_max_k: 21
+cfot_min_k: 2
+cfot_pos_weight: 1.0
+cfot_sparsify: keepmass
+cfot_start_epoch: 5
+cfot_tau: 0.45
+cfot_type: adaptive
+cfot_vel_weight: 0.2
+cfot_warmup_epochs: 20
+data_dir: D:\Dataset\Extract IPN Coordinates\ExtractedTXT
+device: cuda
+dropout: 0.4
+early_stop_patience: 20
+enable_cfot: true
+epochs: 200
+exp_name: stgcn_ipn_baseline_cfot_new_conf_norm_mass08_ep520_184
+export_adj: true
+export_every: 10
+feat: xyz
+graph_strategy: spatial
+in_ch: 3
+label_smoothing: 0.1
+lr: 0.005
+max_T: 80
+model: stgcn
+normalize: true
+num_class: 14
+save_dir: runs/ipn_stgcn
+seed: 42
+split_seed: 42
+temporal_mode: interp
+wd: 0.0003
+

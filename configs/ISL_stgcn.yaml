@@ -1,0 +1,70 @@
+# ============================
+# DATASET PATHS
+# ============================
+train_dir: "D:\\Indian Sign languge Recognition\\dataset\\train_test\\train"
+val_dir:   "D:\\Indian Sign languge Recognition\\dataset\\train_test\\validation"
+test_dir:  "D:\\Indian Sign languge Recognition\\dataset\\train_test\\test"
+
+# ============================
+# DATASET LOADER PARAMS
+# ============================
+feat: xyz                
+normalize: true
+max_T: 30               # sequences have 30 frames
+temporal_mode: interp   
+
+offline_aug_factor: 0                
+offline_cache_dir: null             
+build_cache: false
+
+# ============================
+# MODEL SETTINGS
+# ============================
+model: stgcn
+in_ch: 3                
+graph_strategy: spatial
+dropout: 0.4
+num_class: 50           
+
+# ============================
+# CFOT SETTINGS (if using CFOT)
+# ============================
+enable_cfot: true
+cfot_type: adaptive
+cfot_affinity: learned
+cfot_deltas: [1, 2, 4, 8, 16]
+cfot_iters: 9
+cfot_tau: 0.45
+cfot_beta: 0.6
+cfot_min_k: 2
+cfot_max_k: 75
+cfot_pos_weight: 1.0
+cfot_warmup_epochs: 20
+cfot_start_epoch: 5
+cfot_keep_mass: 0.8
+cfot_cosine_eps: 1e-6
+cfot_euclid_scale: 1.0
+cfot_vel_weight: 0.2
+cfot_hidden: 64
+cfot_inject: pre
+cfot_sparsify: keepmass
+
+# ============================
+# TRAINING
+# ============================
+epochs: 200
+device: cuda
+lr: 0.005
+wd: 0.0003
+seed: 42
+label_smoothing: 0.1
+early_stop_patience: 20
+split_seed: 42
+export_adj: true
+export_every: 10
+
+# ============================
+# OUTPUT / LOGGING
+# ============================
+exp_name: "stgcn_indian_sign_v4"
+save_dir: "runs/indian_sign"

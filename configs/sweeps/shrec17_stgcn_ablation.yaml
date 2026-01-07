@@ -1,0 +1,142 @@
+# configs/sweeps/shrec17_stgcn_ablation.yaml
+# SHREC'17 × ST-GCN ablation (R1..R10) with per-run CONFIG OVERLAYS
+# Runner will merge `fixed.config` with each run's `overrides` and pass
+# the merged YAML as --config to train.py.
+
+output_root: runs/shrec17_stgcn
+
+seeds: [42, 43, 44]
+
+fixed:
+  # ====== BASE CONFIG ======
+  config: configs/shrec17_stgcn.yaml
+
+  # ====== DATA & INPUTS (also sent via CLI) ======
+  data_dir: /home/qsdal2/Documents/Dataset/HandGestureDataset_SHREC2017
+  ann_train: /home/qsdal2/Documents/Dataset/HandGestureDataset_SHREC2017/train_gestures.txt
+  val_ratio: 0.2
+  split_seed: 42
+  max_T: 180
+  normalize: false
+
+  # ====== MODEL/FEATS (CLI) ======
+  model: stgcn
+  in_channels: 3
+  feat: xyz
+  dropout: 0.5
+  num_class: 14
+
+  # ====== OPT / TRAIN (CLI) ======
+  lr: 0.001
+  wd: 0.0001
+  aug: true
+  temporal_mode: interp
+  label_smoothing: 0.05
+  epochs: 200
+  patience: 15
+
+  # ====== I/O naming ======
+  exp_prefix: shrec17_stgcn
+
+# NOTE: The following override keys must match your internal config schema.
+# If your config nests these (e.g., cfot: {tau: 0.3}), adjust accordingly.
+
+runs:
+  - id: R1
+    desc: "Baseline — no CFOT; self-only temporal; bidirectional; dense"
+    enable_cfot: false
+    overrides:
+      temp_adj: self
+      bidir_time: true
+      topk: 0
+
+  - id: R2
+    desc: "Cosine temporal; forward; topk=6"
+    enable_cfot: false
+    overrides:
+      temp_adj: cosine
+      bidir_time: false
+      topk: 6
+
+  - id: R3
+    desc: "L2-max temporal; forward; topk=6"
+    enable_cfot: false
+    overrides:
+      temp_adj: l2max
+      bidir_time: false
+      topk: 6
+
+  - id: R4
+    desc: "Fixed Δ set + self-only temporal; forward; dense"
+    enable_cfot: true
+    overrides:
+      cfot_mode: fixed
+      deltas: [1,2,3,4,6,8,12]
+      temp_adj: self
+      bidir_time: false
+      topk: 0
+
+  - id: R5
+    desc: "Fixed Δ set + L2-max temporal; forward; topk=6"
+    enable_cfot: true
+    overrides:
+      cfot_mode: fixed
+      deltas: [1,2,3,4,6,8,12]
+      temp_adj: l2max
+      bidir_time: false
+      topk: 6
+
+  - id: R6
+    desc: "Adaptive Δ (tau=0.3, topkΔ=6) + self-only temporal; forward; dense"
+    enable_cfot: true
+    overrides:
+      cfot_mode: adaptive
+      cfot_tau: 0.3
+      cfot_topk: 6
+      temp_adj: self
+      bidir_time: false
+      topk: 0
+
+  - id: R7
+    desc: "Adaptive Δ (tau=0.3, topkΔ=6) + L2-max temporal; forward; topk=6 (MAIN)"
+    enable_cfot: true
+    overrides:
+      cfot_mode: adaptive
+      cfot_tau: 0.3
+      cfot_topk: 6
+      temp_adj: l2max
+      bidir_time: false
+      topk: 6
+
+  - id: R8
+    desc: "Adaptive Δ (tau=0.5, topkΔ=6) + L2-max temporal; forward; topk=6"
+    enable_cfot: true
+    overrides:
+      cfot_mode: adaptive
+      cfot_tau: 0.5
+      cfot_topk: 6
+      temp_adj: l2max
+      bidir_time: false
+      topk: 6
+
+  - id: R9
+    desc: "Adaptive Δ (tau=0.3, topkΔ=4) + L2-max temporal; forward; topk=6"
+    enable_cfot: true
+    overrides:
+      cfot_mode: adaptive
+      cfot_tau: 0.3
+      cfot_topk: 4
+      temp_adj: l2max
+      bidir_time: false
+      topk: 6
+
+  - id: R10
+    desc: "Adaptive Δ (tau=0.3, topkΔ=6) + L2-max temporal; bidirectional; topk=6"
+    enable_cfot: true
+    overrides:
+      cfot_mode: adaptive
+      cfot_tau: 0.3
+      cfot_topk: 6
+      temp_adj: l2max
+      bidir_time: true
+      topk: 6

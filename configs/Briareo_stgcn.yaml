@@ -1,0 +1,69 @@
+# ST-GCN on Briareo (classes auto from annotations)
+
+# ------------------
+# Data
+# ------------------
+data_dir: D:\\Dataset\\Briareo_landmarks_splits\\landmarks         # folder that contains per-sequence subfolders with .txt
+ann_train: "D:\\Dataset\\Briareo_landmarks_splits\\splits\\train\\depth_train.npz"
+ann_val:   "D:\\Dataset\\Briareo_landmarks_splits\\splits\\train\\depth_val.npz"
+
+max_T: 60
+normalize: false
+feat: xyz                              
+aug: false
+temporal_mode: interp                 
+
+# ------------------
+# CFOT
+# ------------------
+enable_cfot: false
+cfot_type: adaptive
+cfot_deltas: [1, 2, 4 , 8, 16]
+cfot_hidden: 64
+cfot_iters: 7
+cfot_tau: 0.60
+cfot_inject: pre
+cfot_beta: 0.4
+cfot_start_epoch: 5
+cfot_warmup_epochs: 20
+
+cfot_sparsify: adaptive
+cfot_keep_mass: 0.80
+cfot_min_k: 2
+cfot_max_k: 21
+
+
+cfot_affinity: learned         
+cfot_euclid_scale: 1.0
+cfot_cosine_eps: 1.0e-6
+cfot_pos_weight: 1.0          
+cfot_vel_weight: 0.2          
+
+
+# ------------------
+# Model
+# ------------------
+num_class: 12                        
+in_ch: 3                              
+dropout: 0.5
+graph_strategy: spatial
+
+# ------------------
+# Train
+# ------------------
+epochs: 200
+early_stop_patience: 15
+batch: 32
+lr: 0.0005
+wd: 0.0003
+label_smoothing: 0.1
+seed: 42
+device: cuda
+
+# ------------------
+# IO
+# ------------------
+save_dir: runs/briareo_stgcn
+exp_name: stgcn_briareo_xyz_seed_42_wnorm
+export_adj: true
+export_every: 10
