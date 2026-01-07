@@ -7,7 +7,7 @@ Official PyTorch implementation of the paper:
 
 
 <p align="center">
-  <img src="figures/CFOT_overview.pdf" width="900">
+  <img src="figures/CFOT_overview.png" width="900">
 </p>
 
 
@@ -41,7 +41,7 @@ python eval_<dataset_name:isl||ipn||briareo>.py \
 
 
 
-\## Installation
+## Installation
 
 ```bash
 
