@@ -7,7 +7,7 @@ Official PyTorch implementation of the paper:
 
 
 <p align="center">
-  <img src="figures/pipeline.pdf" width="900">
+  <img src="figures/CFOT_overview.pdf" width="900">
 </p>
 
 
