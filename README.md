@@ -36,6 +36,10 @@ Google MediaPipe** from the IPN Hand Gesture Dataset.
 - Coordinates: (x, y, z)
 
 
+📥 **Download link (Google Drive):**  
+[IPN_Skeleton_MediaPipe.zip](https://drive.google.com/drive/folders/1E0On1mm5CJVTFMIKrySd6q0odkxmOjba?usp=drive_link)
+
+
 ---
 
 ## Pretrained Models
