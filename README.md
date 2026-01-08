@@ -36,6 +36,6 @@ variations and motion ambiguity.
 Evaluate a pretrained CFOT model:
 
 ```bash
-python eval_<dataset_name>.py \
+python scripts\eval_<dataset_name>.py\
   --config configs/<dataset_name>_stgcn.yaml \
   --weights pretrained/cfot_<dataset_name>.pt
