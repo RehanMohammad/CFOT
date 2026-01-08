@@ -55,8 +55,15 @@ Google MediaPipe** from the IPN Hand Gesture Dataset.
 ## Quick Start (Evaluation)
 
 Evaluate a pretrained CFOT model:
-
+-IPN
 ```bash
-python scripts\eval_<dataset_name>.py\
-  --config configs/<dataset_name>_stgcn.yaml \
-  --weights pretrained/cfot_<dataset_name>.pt
+  python scripts\eval_ipn.py   --config configs/ipn_stgcn.yaml  --ann-test <"path to annot_TestList"> --ckpt pretrained/cfot_ipn.pt
+
+-ISL
+```bash
+  python scripts/eval_isl.py --config configs/ISL_stgcn.yaml --ckpt pretrained/cfot_isl.pt
+
+
+-Briareo
+```bash
+  python scripts/eval_briareo.py  --config configs/briareo_stgcn.yaml   --ann-test <"path to npz_list>  pretrained/cfot_briareo.pt 
