@@ -19,6 +19,23 @@ long-range correspondences between skeletal joints across non-consecutive
 frames using optimal transport, enabling robust recognition under temporal
 variations and motion ambiguity.
 
+
+# IPN Skeleton Dataset (MediaPipe Extracted)
+
+This dataset contains **skeleton-based representations extracted using
+Google MediaPipe** from the IPN Hand Gesture Dataset.
+
+## Important Note
+
+- This dataset contains **only derived skeleton data**
+
+## Extraction Details
+
+- Skeleton extractor: Google MediaPipe
+- Joints: hand and upper-body landmarks
+- Coordinates: (x, y, z)
+
+
 ---
 
 ## Pretrained Models
