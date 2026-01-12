@@ -58,18 +58,13 @@ Evaluate a pretrained CFOT model:
 -IPN
 ```bash
   python scripts\eval_ipn.py   --config configs/ipn_stgcn.yaml  --ann-test <"path to annot_TestList"> --ckpt pretrained/cfot_ipn.pt
-```bash
 
 
 -ISL
-```bash
   python scripts/eval_isl.py --config configs/ISL_stgcn.yaml --ckpt pretrained/cfot_isl.pt
-```bash
 
 
 
 -Briareo
-```bash
   python scripts/eval_briareo.py  --config configs/briareo_stgcn.yaml   --ann-test <"path to npz_list>  --ckpt pretrained/cfot_briareo.pt 
-  ```bash
 
