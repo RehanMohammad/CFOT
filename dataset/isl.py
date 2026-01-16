@@ -3,15 +3,12 @@
 Dataset loader for your MediaPipe-extracted frames saved as:
   <root>/<action_label>/<sequence_folder>/<frame_number>.npy
 
-Example:
-  D:\Indian Sign languge Recognition\dataset\train_test\train\action_01\seq_0001\0001.npy
-
 This loader:
  - Scans a root split directory (train/validation/test) and builds items per sequence folder.
  - Loads sequences by stacking per-frame .npy files (robust to several per-frame array shapes).
  - Supports temporal resampling, normalization (root-center + unit bone scale heuristic),
    online augmentation, deterministic offline augmentation with cache, and printing class names.
- - Outputs tensors shaped [C, T, V, 1] where C=3 (xyz) or 6 (xyz+vel).
+ - Outputs tensors shaped [C, T, V, 1] where C=3 (xyz).
 """
 from __future__ import annotations
 import os

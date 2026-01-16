@@ -521,10 +521,7 @@ def main():
     p.add_argument("--config", type=str, default=None)
 
     # IO / data overrides
-    p.add_argument("--data-dir", type=str, default=None)
-    p.add_argument("--ann-train", type=str, default=None)
-    p.add_argument("--ann-val", type=str, default=None)
-    p.add_argument("--ann-test", type=str, default=None)
+
     p.add_argument("--val-ratio", type=float, default=None)
     p.add_argument("--split-seed", type=int, default=None)
     p.add_argument("--max-T", type=int, default=None)
@@ -579,10 +576,17 @@ def main():
     # Repro + device
     force_reproducible(42)
     cfg = load_config(args.config)
+    data_cfg = cfg.get("data", {})
+    data_root = Path(data_cfg.get("root", "data/IPN"))
+
+    ann_train = data_root / data_cfg["annotations"]["train"]
+    ann_val   = data_root / data_cfg["annotations"]["val"]
+    skeleton_dir = data_root / data_cfg["skeleton_dir"]
+
+    cfg["ann_train"] = str(ann_train)
+    cfg["ann_val"]   = str(ann_val)
+    cfg["data_dir"]  = str(skeleton_dir)
     cfg = override(cfg,
-        data_dir=args.data_dir,
-        ann_train=args.ann_train,
-        ann_val=args.ann_val,
         val_ratio=args.val_ratio,
         split_seed=args.split_seed if args.split_seed is not None else cfg.get("split_seed", 42),
         max_T=args.max_T,
@@ -615,6 +619,9 @@ def main():
         cfot_pos_weight=args.cfot_pos_weight if args.cfot_pos_weight is not None else cfg.get("cfot_pos_weight",1.0),
         cfot_vel_weight=args.cfot_vel_weight if args.cfot_vel_weight is not None else cfg.get("cfot_vel_weight",0.2),
     )
+
+    
+
     set_seed(int(cfg.get("seed", 42)))
     device = torch.device(cfg.get("device", "cuda" if torch.cuda.is_available() else "cpu"))
 
@@ -634,7 +641,7 @@ def main():
     split_train = split_dir / "train_split.txt"
     split_val   = split_dir / "val_split.txt"
 
-    if not ann_val_cfg or (isinstance(ann_val_cfg, str) and (ann_val_cfg.strip().lower() in {"", "none", "null"} or not Path(ann_val_cfg).exists())):
+    if cfg.get("val_ratio") is not None:
         items = _read_ann_lines(str(ann_train_path))
         ratio = float(cfg.get("val_ratio", 0.2)); split_seed = int(cfg.get("split_seed", 42))
         tr_items, va_items = stratified_split(items, ratio, split_seed)
@@ -710,18 +717,7 @@ def main():
     else:
         print("[cfot] Disabled.")
 
-    ### NEW: add model graph to TensorBoard (Graphs tab)
-        # Model
-    model = build_model(cfg, device)
-    if cfg.get("enable_cfot", False):
-        has = hasattr(model, "cfot_module") and (getattr(model, "cfot_module", None) is not None)
-        if not has:
-            raise RuntimeError("[CFOT] enable_cfot=True but model has no cfot_module.")
-        n_cfot_params = sum(p.numel() for p in model.cfot_module.parameters())
-        print(f"[cfot] Enabled. cfot_params={n_cfot_params}")
-    else:
-        print("[cfot] Disabled.")
-
+    
     # ------------------------------
     # Graph visualization
     # ------------------------------

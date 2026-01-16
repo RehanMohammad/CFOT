@@ -1,5 +1,10 @@
-ann_train: D:\ipn\annotations\Annot_TrainList_splitted.txt
-ann_val: D:\ipn\annotations\Annot_ValidList_splitted.txt
+data:
+  root: D:\\Dataset\\Extract IPN Coordinates
+  skeleton_dir: ExtractedTXT
+  annotations:
+    train: D:\\IPN/annotations/Annot_TrainList_splitted.txt
+    val: D:\\IPN/annotations/Annot_ValidList_splitted.txt
+
 aug: false
 batch: 32
 cfot_affinity: learned
@@ -20,7 +25,6 @@ cfot_tau: 0.45
 cfot_type: adaptive
 cfot_vel_weight: 0.2
 cfot_warmup_epochs: 20
-data_dir: D:\Dataset\Extract IPN Coordinates\ExtractedTXT
 device: cuda
 dropout: 0.4
 early_stop_patience: 20

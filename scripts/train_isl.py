@@ -422,9 +422,7 @@ def main():
     p.add_argument("--config", type=str, default=None)
 
     # IO / data overrides (use directories: train_dir / val_dir / test_dir)
-    p.add_argument("--train-dir", type=str, default=None)
-    p.add_argument("--val-dir", type=str, default=None)
-    p.add_argument("--test-dir", type=str, default=None)
+
     p.add_argument("--max-T", type=int, default=None)
     p.add_argument("--batch", type=int, default=None)
     p.add_argument("--seed", type=int, default=None)
@@ -457,10 +455,18 @@ def main():
     # Repro + device
     force_reproducible(42)
     cfg = load_config(args.config)
+    data_cfg = cfg["data"]
+    data_root = Path(data_cfg["root"])
+
+    train_dir = data_root / data_cfg["splits"]["train"]
+    val_dir   = data_root / data_cfg["splits"]["val"]
+    test_dir  = data_root / data_cfg["splits"]["test"]
+
+    cfg["train_dir"] = str(train_dir)
+    cfg["val_dir"]   = str(val_dir)
+    test_dir = cfg.get("test_dir")
+
     cfg = override(cfg,
-        train_dir=args.train_dir if args.train_dir is not None else cfg.get("train_dir"),
-        val_dir=args.val_dir if args.val_dir is not None else cfg.get("val_dir"),
-        test_dir=args.test_dir if args.test_dir is not None else cfg.get("test_dir"),
         max_T=args.max_T,
         feat=args.feat if args.feat is not None else cfg.get("feat", "xyz"),
         num_class=args.num_class,
@@ -497,10 +503,11 @@ def main():
     val_dir   = cfg.get("val_dir")
 
     if train_dir is None:
-        raise RuntimeError("train_dir must be provided in config or via --train-dir (point to split folder e.g. train).")
-    if val_dir is None:
-        raise RuntimeError("val_dir must be provided in config or via --val-dir (point to split folder e.g. validation).")
+        raise RuntimeError("train_dir missing. Check data.splits.train in YAML config.")
 
+    if val_dir is None:
+        raise RuntimeError("val_dir missing. Check data.splits.val in YAML config.")
+    
     # Datasets & loaders
     max_T = int(cfg.get("max_T", 30))
     feat = cfg.get("feat", "xyz").lower()

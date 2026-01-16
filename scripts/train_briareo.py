@@ -954,9 +954,7 @@ def main():
     p.add_argument("--config", type=str, default=None)
 
     # Common overrides
-    p.add_argument("--data-dir", type=str, default=None)
-    p.add_argument("--ann-train", type=str, default=None)
-    p.add_argument("--ann-val", type=str, default=None)
+    
     p.add_argument("--val-ratio", type=float, default=None)
     p.add_argument("--split-seed", type=int, default=None, help="Seed for stratified split (default 42).")
     p.add_argument("--max-T", type=int, default=None)
@@ -1028,10 +1026,17 @@ def main():
 
     # --- load & override config ---
     cfg = load_config(args.config)
+    data_cfg = cfg["data"]
+    data_root = Path(data_cfg["root"])
+
+    data_dir = data_root / data_cfg["landmarks_dir"]
+    ann_train = data_root / data_cfg["annotations"]["train"]
+    ann_val   = data_root / data_cfg["annotations"]["val"]
+
+    cfg["data_dir"]  = str(data_dir)
+    cfg["ann_train"] = str(ann_train)
+    cfg["ann_val"]   = str(ann_val)
     cfg = override(cfg,
-        data_dir=args.data_dir,
-        ann_train=args.ann_train,
-        ann_val=args.ann_val,
         val_ratio=args.val_ratio,
         split_seed=args.split_seed if args.split_seed is not None else cfg.get("split_seed", 42),
         max_T=args.max_T,
@@ -1097,7 +1102,7 @@ def main():
     split_train = split_dir / "train_split.txt"
     split_val   = split_dir / "val_split.txt"
 
-    if not ann_val_cfg or (isinstance(ann_val_cfg, str) and (ann_val_cfg.strip().lower() in {"", "none", "null"} or not Path(ann_val_cfg).exists())):
+    if cfg.get("val_ratio") is not None:
         items = _read_ann_lines(str(ann_train_path))
         ratio = float(cfg.get("val_ratio", 0.2))
         split_seed = int(cfg.get("split_seed", 42))

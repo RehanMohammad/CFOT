@@ -1,9 +1,15 @@
 # ============================
-# DATASET PATHS
+# DATA
 # ============================
-train_dir: "D:\\Indian Sign languge Recognition\\dataset\\train_test\\train"
-val_dir:   "D:\\Indian Sign languge Recognition\\dataset\\train_test\\validation"
-test_dir:  "D:\\Indian Sign languge Recognition\\dataset\\train_test\\test"
+
+data:
+  root: D:\\Indian Sign languge Recognition\\dataset
+  splits:
+    train: train_test/train
+    val:   train_test/validation
+    test:  train_test/test
+
+
 
 # ============================
 # DATASET LOADER PARAMS

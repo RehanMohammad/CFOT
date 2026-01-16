@@ -1,11 +1,12 @@
-# ST-GCN on Briareo (classes auto from annotations)
-
 # ------------------
 # Data
 # ------------------
-data_dir: D:\\Dataset\\Briareo_landmarks_splits\\landmarks         # folder that contains per-sequence subfolders with .txt
-ann_train: "D:\\Dataset\\Briareo_landmarks_splits\\splits\\train\\depth_train.npz"
-ann_val:   "D:\\Dataset\\Briareo_landmarks_splits\\splits\\train\\depth_val.npz"
+data:
+  root: D:\Dataset\Briareo_landmarks_splits
+  landmarks_dir: landmarks
+  annotations:
+    train: D:\Dataset\Briareo_landmarks_splits/splits/train/depth_train.npz
+    val:   D:\Dataset\Briareo_landmarks_splits/splits/train/depth_val.npz
 
 max_T: 60
 normalize: false

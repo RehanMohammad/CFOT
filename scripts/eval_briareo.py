@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-CFOT-aware evaluation for ST-GCN/MSG3D family on Briareo.
+CFOT-aware evaluation for ST-GCNon Briareo.
 
 Key features
 ------------
@@ -11,10 +11,6 @@ Key features
 • Optional strict mode to error if CFOT is requested but not present.
 • Exports confusion matrix (CSV/PNG), per-class recall CSV, optional predictions CSV.
 • Prints timing (throughput, avg ms/sample) and Top-1/Top-5.
-
-Example
--------
-python eval_briareo.py  --config configs/briareo_stgcn.yaml   --ann-test "D:\\Dataset\\Briareo_landmarks_splits\\splits\\test\\depth_test.npz" --ckpt runs\\briareo_stgcn\\stgcn_briareo_xyz_seed_42_adaptive_adaptive_84\\best.pt --dump-preds
 """
 
 from __future__ import annotations
