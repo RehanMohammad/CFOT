@@ -30,7 +30,7 @@ dropout: 0.4
 early_stop_patience: 20
 enable_cfot: true
 epochs: 200
-exp_name: stgcn_ipn_baseline_cfot_new_conf_norm_mass08_ep520_184
+exp_name: stgcn_ipn_cfot
 export_adj: true
 export_every: 10
 feat: xyz

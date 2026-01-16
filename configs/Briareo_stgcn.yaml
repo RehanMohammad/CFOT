@@ -65,6 +65,6 @@ device: cuda
 # IO
 # ------------------
 save_dir: runs/briareo_stgcn
-exp_name: stgcn_briareo_xyz_seed_42_wnorm
+exp_name: stgcn_briareo
 export_adj: true
 export_every: 10

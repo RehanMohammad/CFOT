@@ -72,5 +72,5 @@ export_every: 10
 # ============================
 # OUTPUT / LOGGING
 # ============================
-exp_name: "stgcn_indian_sign_v4"
+exp_name: "stgcn_indian_sign"
 save_dir: "runs/indian_sign"
