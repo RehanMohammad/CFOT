@@ -52,6 +52,16 @@ Google MediaPipe** from the IPN Hand Gesture Dataset.
 
 ---
 
+### Environment setup
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+
+
+---
+
 ## Quick Start (Evaluation)
 
 Evaluate a pretrained CFOT model:
