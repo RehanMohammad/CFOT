@@ -68,7 +68,7 @@ pip install -r requirements.txt
 Evaluate a pretrained CFOT model:
 -IPN
 ```bash
-  python scripts\eval_ipn.py   --config configs/ipn_stgcn.yaml  --ann-test <"path to annot_TestList"> --ckpt pretrained/cfot_ipn.pt
+  python scripts/eval_ipn.py   --config configs/ipn_stgcn.yaml  --ann-test <"path to annot_TestList"> --ckpt pretrained/cfot_ipn.pt
   ```
 
 
