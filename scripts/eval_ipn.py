@@ -24,7 +24,7 @@ from torch.utils.data import DataLoader
 from dataset.ipn import IPNDataset, ipn_collate, build_ipn_label_map
 
 # Reuse helpers from training
-from train_ipn import (
+from scripts.train_ipn import (
     load_config,
     override,
     set_seed,
@@ -91,7 +91,10 @@ def _write_csv(path: Path, rows, header=None):
                 f.write(str(r) + "\n")
 
 def _merge_ckpt_cfg(cfg: Dict[str, Any], ckpt_cfg: Dict[str, Any]) -> Dict[str, Any]:
-    # Only fill missing keys from checkpoint config
+    """
+    Merge checkpoint config into current config.
+    IMPORTANT: Do NOT restore dataset paths from checkpoint.
+    """
     keys = [
         "cfot_affinity", "cfot_euclid_scale", "cfot_cosine_eps",
         "cfot_pos_weight", "cfot_vel_weight",
@@ -100,8 +103,10 @@ def _merge_ckpt_cfg(cfg: Dict[str, Any], ckpt_cfg: Dict[str, Any]) -> Dict[str, 
         "enable_cfot",
         "feat", "max_T", "normalize", "temporal_mode",
         "num_class", "dropout", "graph_strategy", "max_hop",
-        "save_dir", "exp_name", "data_dir", "ann_train"
+        "save_dir", "exp_name"
+        # ❌ DO NOT MERGE data_dir OR ann_train
     ]
+
     out = dict(cfg)
     for k in keys:
         if (k not in out) or (out[k] is None):
@@ -395,6 +400,12 @@ def main():
     # Load config
     cfg = load_config(args.config)
 
+    data_cfg = cfg.get("data", {})
+    if "root" in data_cfg:
+        cfg["data_dir"] = str(Path(data_cfg["root"]) / data_cfg.get("skeleton_dir", ""))
+    data_root = Path(data_cfg.get("root", "data/IPN"))
+    skeleton_dir = data_root / data_cfg["skeleton_dir"]
+
     # Basic overrides from CLI (do not overwrite enable_cfot here)
     cfg = override(cfg,
         ann_test=args.ann_test,
@@ -440,7 +451,10 @@ def main():
     device = torch.device(cfg.get("device", "cuda" if torch.cuda.is_available() else "cpu"))
 
     # Build dataset/loader
-    data_dir = cfg.get("data_dir")
+    data_cfg = cfg.get("data", {})
+    data_root = Path(data_cfg["root"])
+    data_dir = str(data_root / data_cfg["skeleton_dir"])
+
     test_ann = cfg["ann_test"]
     feat = cfg.get("feat", "xyz")
     max_T = int(cfg.get("max_T", 80))
@@ -448,8 +462,10 @@ def main():
     temporal_mode = cfg.get("temporal_mode", "interp")
 
     # Label map same as train
-    train_ann_for_map = cfg.get("ann_train", None)
-    label_map = build_ipn_label_map(train_ann_for_map or test_ann, data_dir)
+    # Evaluation must NEVER depend on training paths
+    label_map = build_ipn_label_map(test_ann, data_dir)
+
+
 
     test_ds = IPNDataset(
         ann_file=test_ann,

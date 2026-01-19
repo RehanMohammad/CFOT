@@ -251,6 +251,22 @@ def main():
 
     # Load cfg & apply overrides
     cfg = load_config(args.config)
+
+    # ------------------------------
+    # Resolve dataset paths (REQUIRED)
+    # ------------------------------
+    data_cfg = cfg.get("data", {})
+    if "root" not in data_cfg or "landmarks_dir" not in data_cfg:
+        raise KeyError(
+            "Config must contain data.root and data.landmarks_dir for Briareo evaluation."
+        )
+
+    cfg["data_dir"] = str(
+        Path(data_cfg["root"]) / data_cfg["landmarks_dir"]
+    )
+
+
+
     cfg = override(
         cfg,
         data_dir=args.data_dir,
@@ -300,7 +316,12 @@ def main():
         want_cfot = bool(args.enable_cfot)
 
 
-    label_map = build_briareo_label_map(cfg["ann_train"], cfg.get("data_dir"))
+    # Evaluation must NEVER depend on training annotations
+    label_map = build_briareo_label_map(
+    args.ann_test,
+    cfg["data_dir"]
+        )
+
 
     # Dataset (no aug at test)
     test_ds = BriareoDataset(

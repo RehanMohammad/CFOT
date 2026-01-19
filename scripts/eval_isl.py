@@ -31,7 +31,7 @@ from dataset.isl import (
 )
 
 # Reuse helpers from training
-from train_isl import (
+from scripts.train_isl import (
     load_config,
     override,
     set_seed,
@@ -278,6 +278,15 @@ def main():
     # Load config
     cfg = load_config(args.config)
 
+    data_cfg = cfg.get("data", {})
+    if "root" not in data_cfg or "splits" not in data_cfg or "test" not in data_cfg["splits"]:
+        raise KeyError("Config must contain data.root and data.splits.test for ISL evaluation.")
+
+    cfg["test_dir"] = str(
+        Path(data_cfg["root"]) / data_cfg["splits"]["test"]
+    )
+
+
     # Basic overrides from CLI (do not overwrite enable_cfot here)
     cfg = override(cfg,
     batch=args.batch if args.batch is not None else cfg.get("batch", 64),
@@ -323,7 +332,7 @@ def main():
     device = torch.device(cfg.get("device", "cuda" if torch.cuda.is_available() else "cpu"))
 
     # Build dataset/loader
-    test_dir = cfg["test_dir"]
+    # test_dir = cfg["test_dir"]
     feat = cfg.get("feat", "xyz")
     max_T = int(cfg.get("max_T", 30))
     normalize = bool(cfg.get("normalize", False))
@@ -332,14 +341,14 @@ def main():
     # Label map same as train
 
     test_ds = IndianSignSequenceDataset(
-    root_split_dir=test_dir,
+    root_split_dir=cfg["test_dir"],
     max_T=int(cfg.get("max_T", 30)),
     feat=cfg.get("feat", "xyz"),
     normalize=bool(cfg.get("normalize", True)),
     temporal_mode=cfg.get("temporal_mode", "interp"),
     aug=False,
     eval_mode=True,
-        )
+    )
 
     batch_size = int(cfg.get("batch", 64))
     test_loader = DataLoader(

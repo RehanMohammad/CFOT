@@ -54,7 +54,7 @@ Google MediaPipe** from the IPN Hand Gesture Dataset.
 
 ### Environment setup
 ```bash
-python -m venv venv
+python -m venv cfot
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
@@ -68,19 +68,18 @@ pip install -r requirements.txt
 Evaluate a pretrained CFOT model:
 -IPN
 ```bash
-  python scripts/eval_ipn.py   --config configs/ipn_stgcn.yaml  --ann-test <"path to annot_TestList"> --ckpt pretrained/cfot_ipn.pt
+  python -m scripts.eval_ipn --config configs/ipn_stgcn.yaml --ann-test <"path to annot_TestList"> --ckpt pretrained/cfot_ipn.pt 
   ```
-
 
 -ISL
 ```bash
-  python scripts/eval_isl.py --config configs/ISL_stgcn.yaml --ckpt pretrained/cfot_isl.pt
+  python -m scripts.eval_isl --config configs/ISL_stgcn.yaml --ckpt pretrained/cfot_isl.pt
 ```
 
 
 -Briareo
 ```bash
-  python scripts/eval_briareo.py  --config configs/briareo_stgcn.yaml   --ann-test <"path to npz_list>  --ckpt pretrained/cfot_briareo.pt 
+  python -m scripts.eval_briareo  --config configs/briareo_stgcn.yaml   --ann-test <"path to npz_list>  --ckpt pretrained/cfot_briareo.pt 
 ```
 
 
@@ -92,19 +91,19 @@ Evaluate a pretrained CFOT model:
 
 -IPN
 ```bash
-  python scripts/train_ipn --config configs/ipn_stgcn.yaml
+  python -m scripts/train_ipn --config configs/ipn_stgcn.yaml
   ```
 
 
 -ISL
 ```bash
-  python scripts/train_isl --config configs/ISL_stgcn.yaml
+  python -m scripts/train_isl --config configs/ISL_stgcn.yaml
 ```
 
 
 -Briareo
 ```bash
-  python scripts/train_briareo --config configs/briareo_stgcn.yaml
+  python -m scripts/train_briareo --config configs/briareo_stgcn.yaml
 ```
 
 
