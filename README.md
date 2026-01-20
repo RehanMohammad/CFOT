@@ -55,7 +55,7 @@ Google MediaPipe** from the IPN Hand Gesture Dataset.
 ### Environment setup
 ```bash
 python -m venv cfot
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source cfot/bin/activate  # Windows: cfot\Scripts\activate
 pip install -r requirements.txt
 
 ```
@@ -65,7 +65,8 @@ pip install -r requirements.txt
 
 ## Quick Start (Evaluation)
 
-Evaluate a pretrained CFOT model:
+Evaluate a pretrained CFOT model (Update the path of each dataset in connfig files , for cpu add --device cpu) :
+
 -IPN
 ```bash
   python -m scripts.eval_ipn --config configs/ipn_stgcn.yaml --ann-test <"path to annot_TestList"> --ckpt pretrained/cfot_ipn.pt 
